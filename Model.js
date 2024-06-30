@@ -27,18 +27,20 @@ db.sequelize.sync({ alter:true })
     console.log("re-sync done!")
 })
 
-db.center = require('./models/center')
-db.roles = require('./models/topic')
-db.user = require('./models/users')
-db.topic = require('./models/topic')
-db.class = require('./models/class')
-db.subject = require('./models/subject')
-db.questions = require('./models/questions')
-db.mcqs = require('./models/mcqs')
-db.choices = require('./models/choices')
-db.answer = require('./models/answer')
-db.checkers = require('./models/checkers')
-db.chapter = require('./models/chapter')
+db.center = require('./models/center')(sequelize,DataTypes)
+db.roles = require('./models/topic')(sequelize,DataTypes)
+db.user = require('./models/users')(sequelize,DataTypes)
+db.topic = require('./models/topic')(sequelize,DataTypes)
+db.class = require('./models/class')(sequelize,DataTypes)
+db.subject = require('./models/subject')(sequelize,DataTypes)
+db.questions = require('./models/questions')(sequelize,DataTypes)
+db.mcqs = require('./models/mcqs')(sequelize,DataTypes)
+db.choices = require('./models/choices')(sequelize,DataTypes)
+db.answer = require('./models/answer')(sequelize,DataTypes)
+db.checkers = require('./models/checkers')(sequelize,DataTypes)
+db.chapter = require('./models/chapter')(sequelize,DataTypes)
+db.paper = require('./models/paper')(sequelize,DataTypes)
+db.key = require('./models/key')(sequelize,DataTypes)
 
 
 // User
@@ -145,4 +147,13 @@ db.questions.hasMany(db.checkers, {
 })
 db.checkers.belongsTo(db.questions, {
     foriegnKey: 'question_id'
+})
+
+// Key
+
+db.paper.hasOne(db.key, {
+    foriegnKey: 'paper_id'
+})
+db.key.belongsTo(db.paper, {
+    foriegnKey: 'paper_id'
 })

@@ -27,9 +27,19 @@ const reviewUser = async(req,res) => {
     res.json(200).send(users)
 }
 
+const loginUser = async(req,res) => {
+    const user = await user.findOne({where:{email:req.body.email, password:req.body.password}})
+    if(user === NULL) {
+        res.json(300).send("USER NOT FOUND !")
+    }
+    else {
+        res.json(200).send(user)
+    }
+}
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
-    reviewUser
+    reviewUser,
+    loginUser,
 }

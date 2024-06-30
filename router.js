@@ -10,7 +10,8 @@ const rolesController = require('./controllers/rolesController')
 const subjectController = require('./controllers/subjectController')
 const topicController = require('./controllers/topicController')
 const userController = require('./controllers/userController')
-
+const paperController = require('./controllers/paperController')
+const keyController = require('./controllers/keyControllers')
 const router = require("express").Router()
 
 // Answer
@@ -84,5 +85,18 @@ router.post("/createUser",userController.createUser)
 router.post("/deleteUser",userController.deleteUser)
 router.post("/reviewUser",userController.reviewUser)
 router.post("/updateUser",userController.updateUser)
+router.post("/loginUser",userController.loginUser)
+
+// Paper 
+router.post("/createPaper",paperController.createPaper)
+router.post("/updatePaper",paperController.createPaper)
+router.post("/deletePaper",paperController.createPaper)
+router.post("/reviewPaper",paperController.createPaper)
+
+// Key
+router.post('/createKey',keyController.createKey)
+router.post('/deleteKey',keyController.deleteKey)
+router.post('/reviewKey',keyController.reviewKey)
+router.post('/updateKey',keyController.updateKey)
 
 module.exports = router
