@@ -27,9 +27,15 @@ const reviewSubject = async(req,res) => {
     res.json(200).send(subject)
 }
 
+const reviewSubjects = async(req,res) => {
+    const subject = await subject.findAll({where:{id:req.body.id, class_id:req.body.class_id}})
+    res.json(200).send(subject)
+}
+
 module.exports = {
     createSubject,
     updateSubject,
     deleteSubject,
-    reviewSubject
+    reviewSubject,
+    reviewSubjects
 }

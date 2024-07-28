@@ -20,8 +20,13 @@ const deleteMcqs = async(req,res) => {
     res.json(200).send(mcq)
 }
 
-const reviewMcqs = async(req,res) => {
+const reviewMcq = async(req,res) => {
     const mcq = await mcqs.findOne({where:{id: req.paramas.id}})
+    res.json(200).send(mcq)
+}
+
+const reviewMcqs = async(req,res) => {
+    const mcq = await mcqs.findOne({where: {topic_id: req.body.topic_id}})
     res.json(200).send(mcq)
 }
 
@@ -29,5 +34,6 @@ module.exports = {
     createMcqs,
     updateMcqs,
     deleteMcqs,
-    reviewMcqs
+    reviewMcqs,
+    reviewMcq
 }

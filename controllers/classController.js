@@ -25,9 +25,15 @@ const reviewClass = async(req,res) => {
     res.json(200).send(clas)
 }
 
+const reviewClasses = async(req,res) => {
+    const clas = await classes.findAll({where:{id:req.paramas.id}})
+    res.json(200).send(clas)
+}
+
 module.exports = {
     createClass,
     updateClass,
     deleteClass,
-    reviewClass
+    reviewClass,
+    reviewClasses
 }

@@ -25,9 +25,15 @@ const reviewTopic = async(req,res) => {
     res.json(200).send(topic)
 }
 
+const reviewTopicsbychapterId = async(req,res) => {
+    const topic = await topic.findAll({where: {chapter_id: req.body.chapter_id}})
+    res.json(200).send(topic)
+}
+
 module.exports = {
     createTopic,
     updateTopic,
     deleteTopic,
-    reviewTopic
+    reviewTopic,
+    reviewTopicsbychapterId
 }

@@ -7,13 +7,13 @@ module.exports = function(sequelize,DataTypes) {
             allowNull: false,
             primaryKey: true
         },
-        mcqs_id: {
-            type: DataTypes.TEXT,
+        subject_id: {
+            type: DataTypes.INTEGER,
             allowNull: true
         },
-        question_id: {
-            type: DataTypes.TEXT,
-            allowNull: true
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, 
     {

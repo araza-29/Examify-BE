@@ -20,8 +20,13 @@ const deleteChoices = async(req,res) => {
     res.json(200).send("Choice deleted !")
 }
 
-const reviewChoices = async (req,res) => {
+const reviewChoice = async (req,res) => {
     const choice = await choices.findOne({where:{id:req.paramas.id}})
+    res.json(200).send(choice)
+}
+
+const reviewChoices = async(req,res) => {
+    const choice = await choices.findAll({where:{mcqs_id: req.body.mcqs_id}})
     res.json(200).send(choice)
 }
 
@@ -29,5 +34,6 @@ module.exports = {
     createChoices,
     updateChoices,
     deleteChoices,
-    reviewChoices
+    reviewChoices,
+    reviewChoice
 }

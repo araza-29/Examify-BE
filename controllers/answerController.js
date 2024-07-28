@@ -25,9 +25,15 @@ const reviewAnswer = async(req,res) => {
     res.json(200).send(answers)
 }
 
+const getAnswer = async(req,res) => {
+    const answers = await answer.findAll({where:{question_id: req.body.question_id}})
+    res.json(200).send(answers)
+}
+
 module.exports = {
     createAnswer,
     updateAnswer,
     deleteAnswer,
-    reviewAnswer
+    reviewAnswer,
+    getAnswer
 }

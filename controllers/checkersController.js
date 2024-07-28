@@ -22,8 +22,13 @@ const deleteCheckers = async(req,res) => {
     res.json(200).send('Checkers deleted !')
 }
 
-const reviewCheckers = async(req,res) => {
+const reviewChecker = async(req,res) => {
     const checker = await checkers.findOne({where:{id: req.paramas.id}})
+    res.json(200).send(checker)
+}
+
+const reviewCheckers = async(req,res) => {
+    const checker = await checkers.findAll({where: {subject_id: req.body.subject_id}})
     res.json(200).send(checker)
 }
 
@@ -31,5 +36,6 @@ module.exports = {
     createCheckers,
     updateCheckers,
     deleteCheckers,
+    reviewChecker,
     reviewCheckers
 }

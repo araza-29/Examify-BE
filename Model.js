@@ -41,7 +41,7 @@ db.checkers = require('./models/checkers')(sequelize,DataTypes)
 db.chapter = require('./models/chapter')(sequelize,DataTypes)
 db.paper = require('./models/paper')(sequelize,DataTypes)
 db.key = require('./models/key')(sequelize,DataTypes)
-
+db.questionMapping = require('./models/questionMapping')(sequelize, DataTypes)
 
 // User
 db.roles.hasMany(db.user,{
@@ -156,4 +156,34 @@ db.paper.hasOne(db.key, {
 })
 db.key.belongsTo(db.paper, {
     foriegnKey: 'paper_id'
+})
+// paper
+
+db.subject.hasMany(db.paper, {
+    foriegnKey: 'subject_id'
+})
+db.paper.belongsTo(db.subject, {
+    foriegnKey: 'subject_id'
+})
+
+db.user.hasMany(db.paper, {
+    foriegnKey: 'user_id'
+})
+db.paper.belongsTo(db.user, {
+    foriegnKey: 'user_id'
+})
+//questionMapping
+
+db.paper.hasMany(db.questionMapping, {
+    foriegnKey: 'paper_id'
+})
+db.questionMapping.belongsTo(db.paper, {
+    foriegnKey: 'paper_id'
+})
+
+db.paper.hasMany(db.questions, {
+    foriegnKey: 'questions_id'
+})
+db.questions.belongsTo(db.paper, {
+    foriegnKey: 'questions_id'
 })
