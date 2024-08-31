@@ -25,9 +25,12 @@ const reviewChapter = async(req,res) => {
     res.json(200).send(chapters)
 }
 
-const reviewChapters = async(req,res) => {
+const reviewChapterBySubjectId = async(req,res) => {
     const chapters = await chapter.findAll({where:{subject_id: req.body.subject_id}})
-    res.json(200).send(chapters)
+    if(chapters){
+        res.json({code: 200, data: chapters})}
+    else 
+        res.json({code:300, data: []})
 }
 
 module.exports = {
@@ -35,5 +38,5 @@ module.exports = {
     updateChapter,
     deleteChapter,
     reviewChapter,
-    reviewChapters
+    reviewChapterBySubjectId
 }

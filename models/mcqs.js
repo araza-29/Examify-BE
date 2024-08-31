@@ -14,6 +14,29 @@ module.exports = function(sequelize, DataTypes) {
         topic_id: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        choice1: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+        ,
+        choice2: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+        ,
+        choice3: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+        ,
+        choice4: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        answer: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },
     {

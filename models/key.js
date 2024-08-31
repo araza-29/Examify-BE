@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             primaryKey: true
         },
-        choice_id: {
+        mcqs_id: {
             type: DataTypes.TEXT,
             allowNull: false
         },

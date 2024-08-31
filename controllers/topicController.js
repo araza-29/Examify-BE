@@ -26,8 +26,11 @@ const reviewTopic = async(req,res) => {
 }
 
 const reviewTopicsbychapterId = async(req,res) => {
-    const topic = await topic.findAll({where: {chapter_id: req.body.chapter_id}})
-    res.json(200).send(topic)
+    const topics = await topic.findAll({where: {chapter_id: req.body.chapter_id}})
+    if(topics)   
+        res.json({code: 200,data: topics});
+    else    
+        res.json({code: 300, data: []});
 }
 
 module.exports = {

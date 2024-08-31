@@ -13,7 +13,21 @@ module.exports = function(sequelize, DataTypes) {
         },
         topic_id: {
             type: DataTypes.INTEGER,
+        },
+        subject_id: {
+            type: DataTypes.INTEGER,
             allowNull: false
+        },
+        selected: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        marks: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        image: {
+            type: DataTypes.STRING
         }
     },
     {

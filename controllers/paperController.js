@@ -3,8 +3,8 @@ const paper = db.paper
 
 const createPaper = async(req,res) => {
     const paperInfo = {
-        mcqs_id: req.body.mcqs_id,
-        question_id: req.body.question_id
+        subject_id: req.body.subject_id,
+        user_id: req.body.user_id
     }
     const papers = paper.create(paperInfo)
     res.json(200),send(papers)

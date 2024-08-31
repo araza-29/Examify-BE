@@ -12,8 +12,22 @@ const topicController = require('./controllers/topicController')
 const userController = require('./controllers/userController')
 const paperController = require('./controllers/paperController')
 const keyController = require('./controllers/keyControllers')
+const questionMappingController = require('./controllers/questionMappingCotroller')
 const router = require("express").Router()
 
+//Image Uploader
+
+const multer = require('multer')
+const upload = multer ({
+    storage:multer.diskStorage({
+        destination: function(req,file,callBack) {
+            callBack(null, "file")
+        },
+        filename: function(req,file,callBack) {
+            callBack(null, file.fieldname+".jpg")
+        }
+    })
+}).single("user.file")
 // Answer
 router.post("/createAnswer",answerController.createAnswer)
 router.post("/deleteAnswer",answerController.deleteAnswer)
@@ -32,7 +46,7 @@ router.post("/createChapter",chapterController.createChapter)
 router.post("/deleteChapter",chapterController.deleteChapter)
 router.post("/reviewChapter",chapterController.reviewChapter)
 router.post("/updateChapter",chapterController.updateChapter)
-router.post("/reviewChapters",chapterController.reviewChapters)
+router.post("/reviewChaptersBySubjectId",chapterController.reviewChapterBySubjectId)
 
 // Checker
 router.post("/createCheckers",checkersController.createCheckers)
@@ -63,11 +77,14 @@ router.post("/updateMcqs",mcqsController.updateMcqs)
 router.post("/reviewMcq",mcqsController.reviewMcq)
 
 // Question
-router.post("/createQuestion",questionController.createQuestion)
+router.post("/createQuestion",upload,(req,res)=>{
+    questionController.createQuestion(req,res)
+})
 router.post("/deleteQuestion",questionController.deleteQuestion)
 router.post("/reviewQuestion",questionController.reviewQuestion)
-router.post("/reviewQuestions",questionController.reviewQuestions)
+router.post("/reviewQuestionsByTopic",questionController.reviewQuestionsByTopicId)
 router.post("/updateQuestion",questionController.updateQuestion)
+router.post("/reviewQuestionsBySubjectId",questionController.reviewQuestionsBySubjectId)
 
 // Roles
 router.post("/createRoles",rolesController.createRoles)
@@ -86,7 +103,7 @@ router.post("/reviewSubjects",subjectController.reviewSubjects)
 router.post("/createTopic",topicController.createTopic)
 router.post("/deleteTopic",topicController.deleteTopic)
 router.post("/reviewTopic",topicController.reviewTopic)
-router.post("/reviewTopics",topicController.reviewTopics)
+router.post("/reviewTopicsByChapterId",topicController.reviewTopicsbychapterId)
 router.post("/updateTopic",topicController.updateTopic)
 
 // User
@@ -98,14 +115,22 @@ router.post("/loginUser",userController.loginUser)
 
 // Paper 
 router.post("/createPaper",paperController.createPaper)
-router.post("/updatePaper",paperController.createPaper)
-router.post("/deletePaper",paperController.createPaper)
-router.post("/reviewPaper",paperController.createPaper)
+router.post("/updatePaper",paperController.updatePaper)
+router.post("/deletePaper",paperController.deletePaper)
+router.post("/reviewPaper",paperController.reviewPaper)
 
 // Key
 router.post('/createKey',keyController.createKey)
 router.post('/deleteKey',keyController.deleteKey)
 router.post('/reviewKey',keyController.reviewKey)
 router.post('/updateKey',keyController.updateKey)
+
+// Question Mapping
+router.post('/createQuestionMapping',questionMappingController.createQuestionMapping)
+router.post('/deleteQuestionMapping',questionMappingController.deleteQuestionMapping)
+router.post('/reviewPaper',questionMappingController.reviewPaper)
+router.post('/reviewPastPaperQuestions',questionMappingController.reviewPastPaperQuestions)
+router.post('/reviewQuestionMapping',questionMappingController.reviewQuestionMapping)
+router.post('/updateQuestionMapping',questionMappingController.updateQuestionMapping)
 
 module.exports = router

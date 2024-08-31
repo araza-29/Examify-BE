@@ -12,7 +12,7 @@ module.exports = function(sequelize,DataTypes) {
             allowNull: false
         },
         subject_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     },
