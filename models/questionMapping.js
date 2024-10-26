@@ -18,6 +18,10 @@ module.exports = function (sequelize,DataTypes) {
         mcqs_id: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        section_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         sequelize,

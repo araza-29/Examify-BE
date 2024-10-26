@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             primaryKey: true
         },
-        mcq: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -37,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
         answer: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNUll: false
         }
     },
     {

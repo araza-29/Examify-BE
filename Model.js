@@ -42,6 +42,7 @@ db.chapter = require('./models/chapter')(sequelize,DataTypes)
 db.paper = require('./models/paper')(sequelize,DataTypes)
 db.key = require('./models/key')(sequelize,DataTypes)
 db.questionMapping = require('./models/questionMapping')(sequelize, DataTypes)
+db.section = require('./models/section')(sequelize,DataTypes)
 
 // User
 db.roles.hasMany(db.user,{
@@ -58,6 +59,13 @@ db.class.belongsTo(db.center, {
     foreignKey: 'center_id'
 })
 
+//Section
+db.paper.hasMany(db.section,{
+    foreignKey: 'paper_id'
+})
+db.section.belongsTo(db.paper,{
+    foreignKey: 'paper_id'
+})
 
 // Subject
 db.class.hasMany(db.subject, {
@@ -99,12 +107,6 @@ db.topic.hasMany(db.questions, {
 })
 db.questions.belongsTo(db.topic, {
     foreignKey: 'topic_id'
-})
-db.subject.hasMany(db.questions, {
-    foreignKey: 'subject_id'
-})
-db.questions.belongsTo(db.subject, {
-    foreignKey: 'subject_id'
 })
 
 
@@ -193,4 +195,11 @@ db.questions.hasMany(db.questionMapping, {
 db.questionMapping.belongsTo(db.questions, {
     foreignKey: 'questions_id'
 })
+db.section.hasMany(db.questionMapping, {
+    foreignKey: 'section_id'
+})
+db.questionMapping.belongsTo(db.section, {
+    foreignKey: 'section_id'
+})
+
 module.exports = db

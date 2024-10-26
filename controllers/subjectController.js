@@ -18,24 +18,24 @@ const updateSubject = async(req,res) => {
 }
 
 const deleteSubject = async(req,res) => {
-    const subject = await subject.update({status: false}, {where:{id:req.paramas.id}})
+    const subjects = await subject.update({status: false}, {where:{id:req.paramas.id}})
     res.json(200).send("Subject deleted !")
 }
 
-const reviewSubject = async(req,res) => {
-    const subject = await subject.findOne({where:{id: req.paramas.id}})
-    res.json(200).send(subject)
+const reviewSubjectByUserID = async(req,res) => {
+    const subjects = await subject.findAll({where:{user_id: req.body.user_id}})
+    res.json({code: 200, data: subjects});
 }
 
-const reviewSubjects = async(req,res) => {
-    const subject = await subject.findAll({where:{id:req.body.id, class_id:req.body.class_id}})
-    res.json(200).send(subject)
+const reviewSubjectsByClassID = async(req,res) => {
+    const subjects = await subject.findAll({where:{ class_id:req.body.class_id}})
+    res.json({code: 200, data: subjects});
 }
 
 module.exports = {
     createSubject,
     updateSubject,
     deleteSubject,
-    reviewSubject,
-    reviewSubjects
+    reviewSubjectByUserID,
+    reviewSubjectsByClassID
 }

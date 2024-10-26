@@ -13,6 +13,8 @@ const userController = require('./controllers/userController')
 const paperController = require('./controllers/paperController')
 const keyController = require('./controllers/keyControllers')
 const questionMappingController = require('./controllers/questionMappingCotroller')
+const section = require('./controllers/section.Controller')
+
 const router = require("express").Router()
 
 //Image Uploader
@@ -70,11 +72,12 @@ router.post("/updateClass",classController.updateClass)
 router.post("/reviewClasses",classController.reviewClasses)
 
 // Mcqs
-router.post("/createMcqs",mcqsController.createMcqs)
-router.post("/deleteMcqs",mcqsController.deleteMcqs)
-router.post("/reviewMcqs",mcqsController.reviewMcqs)
-router.post("/updateMcqs",mcqsController.updateMcqs)
-router.post("/reviewMcq",mcqsController.reviewMcq)
+router.post("/createMCQ",mcqsController.createMcqs)
+router.post("/deleteMCQ",mcqsController.deleteMcqs)
+router.post("/reviewMCQByUserID",mcqsController.reviewMcqsByUserID)
+router.post("/reviewMCQBySubjectID",mcqsController.reviewMcqsBySubjectID)
+router.post("/updateMCQ",mcqsController.updateMcqs)
+router.post("/reviewMCQ",mcqsController.reviewMcq)
 
 // Question
 router.post("/createQuestion",upload,(req,res)=>{
@@ -82,9 +85,9 @@ router.post("/createQuestion",upload,(req,res)=>{
 })
 router.post("/deleteQuestion",questionController.deleteQuestion)
 router.post("/reviewQuestion",questionController.reviewQuestion)
-router.post("/reviewQuestionsByTopic",questionController.reviewQuestionsByTopicId)
+router.post("/reviewQuestionsBySubjectID",questionController.reviewQuestionsBySubjectId)
 router.post("/updateQuestion",questionController.updateQuestion)
-router.post("/reviewQuestionsBySubjectId",questionController.reviewQuestionsBySubjectId)
+router.post("/reviewEveryDetailsQuestionsByUserID",questionController.reviewEveryDetailsQuestionsByUserId)
 
 // Roles
 router.post("/createRoles",rolesController.createRoles)
@@ -95,9 +98,9 @@ router.post("/updateRoles",rolesController.updateRoles)
 // Subject
 router.post("/createSubject",subjectController.createSubject)
 router.post("/deleteSubject",subjectController.deleteSubject)
-router.post("/reviewSubject",subjectController.reviewSubject)
+router.post("/reviewSubjectsByUserID",subjectController.reviewSubjectByUserID)
 router.post("/updateSubject",subjectController.updateSubject)
-router.post("/reviewSubjects",subjectController.reviewSubjects)
+router.post("/reviewSubjectsByClassID",subjectController.reviewSubjectsByClassID)
 
 // Topic
 router.post("/createTopic",topicController.createTopic)
@@ -132,5 +135,11 @@ router.post('/reviewPaper',questionMappingController.reviewPaper)
 router.post('/reviewPastPaperQuestions',questionMappingController.reviewPastPaperQuestions)
 router.post('/reviewQuestionMapping',questionMappingController.reviewQuestionMapping)
 router.post('/updateQuestionMapping',questionMappingController.updateQuestionMapping)
+
+//Section
+router.post('/createSection',section.createSection)
+router.post('/deleteSection',section.deleteSection)
+router.post('/reviewSectionByPaperID',section.reviewSectionByPaperID)
+
 
 module.exports = router
