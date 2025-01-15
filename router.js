@@ -17,19 +17,72 @@ const section = require('./controllers/section.Controller')
 
 const router = require("express").Router()
 
-//Image Uploader
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-const multer = require('multer')
-const upload = multer ({
-    storage:multer.diskStorage({
-        destination: function(req,file,callBack) {
-            callBack(null, "file")
-        },
-        filename: function(req,file,callBack) {
-            callBack(null, file.fieldname+".jpg")
+// Basic configuration first to test file upload
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: './uploads',
+        filename: function (req, file, cb) {
+            console.log('Processing file:', file);
+            cb(null, Date.now() + path.extname(file.originalname));
         }
-    })
-}).single("user.file")
+    }),
+    // Add limits for debugging
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+    },
+    // Add debugging to fileFilter
+    fileFilter: function (req, file, cb) {
+        console.log('Received file in filter:', {
+            fieldname: file.fieldname,
+            originalname: file.originalname,
+            mimetype: file.mimetype
+        });
+        cb(null, true);
+    }
+}).single('file');
+
+// Route to create a question
+router.post('/createQuestion', (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        console.log('Uploaded file:', req.file);
+
+        // Call the controller to create the question
+        questionController.createQuestion(req, res).then((result) => {
+            const questionId = result.id; // Get the ID from the controller
+            console.log('Question created with ID:', questionId);
+
+            if (req.file) {
+                const oldPath = req.file.path; // Path of the temporary file
+                const newPath = path.join('uploads', `${questionId}${path.extname(req.file.originalname)}`);
+
+                // Rename the file to match the question ID
+                fs.rename(oldPath, newPath, (renameErr) => {
+                    if (renameErr) {
+                        console.error('Error renaming file:', renameErr);
+                        return res.status(500).json({ error: 'Failed to rename file' });
+                    }
+
+                    console.log('File renamed successfully:', newPath);
+                    res.status(200).json({ message: 'Question created and file uploaded', questionId });
+                });
+            } else {
+                res.status(200).json({ message: 'Question created without a file', questionId });
+            }
+        }).catch((dbErr) => {
+            console.error('Error creating question:', dbErr);
+            res.status(500).json({ error: dbErr.message });
+        });
+    });
+});
+
 // Answer
 router.post("/createAnswer",answerController.createAnswer)
 router.post("/deleteAnswer",answerController.deleteAnswer)
@@ -80,9 +133,26 @@ router.post("/updateMCQ",mcqsController.updateMcqs)
 router.post("/reviewMCQ",mcqsController.reviewMcq)
 
 // Question
-router.post("/createQuestion",upload,(req,res)=>{
-    questionController.createQuestion(req,res)
-})
+// router.post("/createQuestion", function(req, res) {
+//     console.log('Headers:', req.headers);
+    
+//     upload(req, res, function(err) {
+//         if (err instanceof multer.MulterError) {
+//             console.log('Multer error:', err);
+//             return res.status(400).json({ error: err.message });
+//         } else if (err) {
+//             console.log('Unknown error:', err);
+//             return res.status(500).json({ error: err.message });
+//         }
+        
+//         // Log the entire request for debugging
+//         console.log('Files:', req.files);
+//         console.log('File:', req.file);
+//         console.log('Body:', req.body);
+        
+//         questionController.createQuestion(req, res);
+//     });
+// });
 router.post("/deleteQuestion",questionController.deleteQuestion)
 router.post("/reviewQuestion",questionController.reviewQuestion)
 router.post("/reviewQuestionsBySubjectID",questionController.reviewQuestionsBySubjectId)

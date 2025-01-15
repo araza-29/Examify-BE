@@ -15,7 +15,12 @@ const createQuestion = async(req,res) => {
         type: req.body.type
     }
     const questions = await question.create(questionInfo)
-    res.json(200).send(questions)
+    if(questions){
+        res.json({code: 200, data: questions})
+    }
+    else {
+        res.json({code: 500, data: null})
+    }
 }
 
 const updateQuestion = async(req,res) => {

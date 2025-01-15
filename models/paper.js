@@ -14,6 +14,19 @@ module.exports = function(sequelize,DataTypes) {
         user_id: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        completed: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+        reviewed: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
+        ,
+        locked: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, 
     {
