@@ -42,12 +42,15 @@ const reviewQuestionsBySubjectId = async(req,res) => {
     const questions = await question.findAll({
         include:[{
             model: Topic,
+            required: true,
             attributes:[['id','topic_id'],['name','topic_name']],
             include:[{
                 model: chapter,
+                required: true,
                 attributes: [['id','chapter_id'],['name','chapter_name']],
                 include: [{
                     model: subject,
+                    required: true,
                     attributes: [['id','subject_id'],['name','subject_name']],
                     where: { id: req.body.subject_id }
                 }]

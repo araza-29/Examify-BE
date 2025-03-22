@@ -15,6 +15,10 @@ module.exports = function(sequelize,DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        month: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         completed: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
@@ -27,7 +31,17 @@ module.exports = function(sequelize,DataTypes) {
         locked: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-        }
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+          },
+          updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+          }
     }, 
     {
         sequelize,

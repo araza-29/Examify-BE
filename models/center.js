@@ -10,7 +10,17 @@ module.exports = function(sequelize, DataTypes) {
         name: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+          },
+          updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+          }
     },
     {
         sequelize,

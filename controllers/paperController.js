@@ -4,10 +4,11 @@ const paper = db.paper
 const createPaper = async(req,res) => {
     const paperInfo = {
         subject_id: req.body.subject_id,
-        user_id: req.body.user_id
+        user_id: req.body.user_id,
+        month: req.body.month
     }
     const papers = paper.create(paperInfo)
-    res.json(200),send(papers)
+    res.json({code: 200, data:papers})
 }
 
 const updatePaper = async(req,res) => {
