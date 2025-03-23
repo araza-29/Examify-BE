@@ -8,7 +8,12 @@ const createPaper = async(req,res) => {
         subject_id: req.body.subject_id,
         user_id: req.body.user_id,
         month: req.body.month,
-        completed: req.body.completed
+        completed: req.body.completed,
+        instruction: req.body.instruction,
+        date: req.body.date,
+        year: req.body.year,
+        marks: req.body.marks,
+        duration: req.body.duration,
     }
     const papers = await paper.create(paperInfo)
     res.json({code: 200, data:papers})

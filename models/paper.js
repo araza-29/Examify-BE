@@ -15,6 +15,26 @@ module.exports = function(sequelize,DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        instruction: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        year: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        marks: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        duration: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        date: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
         month: {
             type: DataTypes.INTEGER,
             allowNull: false
