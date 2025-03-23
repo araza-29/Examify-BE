@@ -5,10 +5,11 @@ const createQuestionMapping = async(req,res) => {
     const info = {
         paper_id: req.body.paper_id,
         question_id: req.body.question_id,
-        mcqs_id: req.body.mcqs_id
+        mcqs_id: req.body.mcqs_id,
+        section_id: req.body.section_id
     }
     const mapping = await questionMapping.create(info)
-    res.json(200).send(mapping)
+    res.json({code: 200, data: mapping})
 }
 
 const updateQuestionMapping = async(req,res) => {

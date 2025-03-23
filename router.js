@@ -191,6 +191,7 @@ router.post("/createPaper",paperController.createPaper)
 router.post("/updatePaper",paperController.updatePaper)
 router.post("/deletePaper",paperController.deletePaper)
 router.post("/reviewPaper",paperController.reviewPaper)
+router.post("/reviewAllPaperByUserID",paperController.reviewAllPaperByUserID)
 
 // Key
 router.post('/createKey',keyController.createKey)

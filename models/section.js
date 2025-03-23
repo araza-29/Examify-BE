@@ -11,6 +11,18 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        marks: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         paper_id: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -23,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
           updatedAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+            defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
           }
     },
     {
