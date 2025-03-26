@@ -55,7 +55,7 @@ const reviewAllPaperByUserID = async(req,res) => {
             const plainItem = item.toJSON();  
             return {
                 ...plainItem,
-                class_name: plainItem.subject.account.class_name,
+                class_name: plainItem.subject.class.class_name,
                 subject_name: plainItem.subject.subject_name,
                 class: undefined,
                 subject: undefined

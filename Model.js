@@ -190,10 +190,10 @@ db.questionMapping.belongsTo(db.paper, {
 })
 
 db.questions.hasMany(db.questionMapping, {
-    foreignKey: 'questions_id'
+    foreignKey: 'question_id'
 })
 db.questionMapping.belongsTo(db.questions, {
-    foreignKey: 'questions_id'
+    foreignKey: 'question_id'
 })
 db.section.hasMany(db.questionMapping, {
     foreignKey: 'section_id'

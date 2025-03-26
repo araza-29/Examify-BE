@@ -1,5 +1,8 @@
 const db = require('../Model')
+const { Op } = require("sequelize");
 const questionMapping = db.questionMapping
+const questions = db.questions
+const mcqs = db.mcqs
 
 const createQuestionMapping = async(req,res) => {
     const info = {
@@ -27,9 +30,40 @@ const reviewQuestionMapping = async(req,res) => {
     res.json(200).send(mapping)
 }
 
-const reviewPaper = async(req,res) => {
-    const mapping = await questionMapping.findAll({where:{paper_id: req.body.paper_id}})
-    res.json(200).send(mapping)
+const reviewQuestionsByPaperID = async(req,res) => {
+    const mapping = await questionMapping.findAll({where:{paper_id: req.body.paper_id}, include:[{model:questions, required: true}]})
+    await questionMapping.destroy({ where: { paper_id: req.body.paper_id, question_id: { [Op.ne]: null } } });
+    
+    const transformedData = mapping.map(item => {
+        const plainItem = item.toJSON();  
+        return {
+            ...plainItem,
+            id: plainItem.question.id,
+            name: plainItem.question.name,
+            marks: plainItem.question.marks,
+            image: plainItem.question.image,
+            question: undefined
+        };
+    });
+    res.json({ code: 200, data: transformedData, message: "Mappings deleted successfully" });
+}
+
+const reviewMCQsByPaperID = async(req,res) => {
+    const mapping = await questionMapping.findAll({where:{paper_id: req.body.paper_id}, include:[{model:mcqs, required: true}]})
+    await questionMapping.destroy({ where: { paper_id: req.body.paper_id } });
+    
+    const transformedData = mapping.map(item => {
+        const plainItem = item.toJSON();  
+        return {
+            ...plainItem,
+            id: plainItem.question.id,
+            name: plainItem.question.name,
+            marks: plainItem.question.marks,
+            image: plainItem.question.image,
+            question: undefined
+        };
+    });
+    res.json({ code: 200, data: transformedData, message: "Mappings deleted successfully" });
 }
 
 const reviewPastPaperQuestions = async(req,res) => {
@@ -41,7 +75,8 @@ module.exports = {
     createQuestionMapping,
     updateQuestionMapping,
     deleteQuestionMapping,
-    reviewPaper,
+    reviewQuestionsByPaperID,
+    reviewMCQsByPaperID,
     reviewPastPaperQuestions,
     reviewQuestionMapping
 }

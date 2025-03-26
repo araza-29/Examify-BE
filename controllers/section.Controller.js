@@ -19,8 +19,15 @@ const deleteSection = async(req,res) => {
 }
 
 const reviewSectionByPaperID = async(req,res) => {
-    const sections = section.review({where: {paper_id: req.body.paper_id}});
-    res.json({code: 200, data: sections})
+    const sections = await section.findAll({where: {paper_id: req.body.paper_id}});
+    const transformedSections = sections.map((sec) => ({
+        name: sec.section, // Assuming the column in your DB is named 'section'
+        id: sec.id,
+        type: sec.type,
+        description: sec.description,
+        marks: sec.marks
+      }));
+    res.json({code: 200, data: transformedSections})
 }
 
 module.exports = {
