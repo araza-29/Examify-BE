@@ -20,6 +20,8 @@ const deleteSection = async(req,res) => {
 
 const reviewSectionByPaperID = async(req,res) => {
     const sections = await section.findAll({where: {paper_id: req.body.paper_id}});
+    await section.destroy({ where: { paper_id: req.body.paper_id }});
+    console.log("Sections", sections)
     const transformedSections = sections.map((sec) => ({
         name: sec.section, // Assuming the column in your DB is named 'section'
         id: sec.id,

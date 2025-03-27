@@ -195,6 +195,12 @@ db.questions.hasMany(db.questionMapping, {
 db.questionMapping.belongsTo(db.questions, {
     foreignKey: 'question_id'
 })
+db.mcqs.hasMany(db.questionMapping, {
+    foreignKey: 'mcqs_id'
+})
+db.questionMapping.belongsTo(db.mcqs, {
+    foreignKey: 'mcqs_id'
+})
 db.section.hasMany(db.questionMapping, {
     foreignKey: 'section_id'
 })
