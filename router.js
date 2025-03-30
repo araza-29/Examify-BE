@@ -212,6 +212,7 @@ router.post('/updateQuestionMapping',questionMappingController.updateQuestionMap
 router.post('/createSection',section.createSection)
 router.post('/deleteSection',section.deleteSection)
 router.post('/reviewSectionByPaperID',section.reviewSectionByPaperID)
+router.post('/reviewSectionCheck',section.reviewSectionsCheck)
 
 
 module.exports = router

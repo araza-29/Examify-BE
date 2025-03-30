@@ -20,8 +20,8 @@ const createPaper = async(req,res) => {
 }
 
 const updatePaper = async(req,res) => {
-    const papers = paper.update(req.body)
-    res.json(200).send(papers)
+    const papers = await paper.update({completed: req.body.completed}, {where: {id: req.body.paper_id}})
+    res.json({code:200, data: papers})
 }
 
 const deletePaper = async(req,res) => {
