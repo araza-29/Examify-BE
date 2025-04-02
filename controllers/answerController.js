@@ -2,17 +2,18 @@ const db = require('../Model')
 const answer = db.answer
 
 const createAnswer = async(req,res) => {
+    console.log("Request", req.body)
     const answerInfo = {
         answer: req.body.answer,
         question_id: req.body.question_id
     }
     const answers = await answer.create(answerInfo)
-    res.json(200).send(answers)
+    res.json({code: 200, data: answers})
 }
 
 const updateAnswer = async(req,res) => {
-    const answers = await answer.update(req.body)
-    res.json(200).send(answers)
+    const answers = await answer.update({answer: req.body.answer}, {where: {question_id: req.body.question_id }})
+    res.json({code: 200, data: answers})
 }
 
 const deleteAnswer = async(req,res) => {
@@ -21,8 +22,8 @@ const deleteAnswer = async(req,res) => {
 }
 
 const reviewAnswer = async(req,res) => {
-    const answers = await answer.findOne({where:{id:req.paramas.id}})
-    res.json(200).send(answers)
+    const answers = await answer.findOne({where:{question_id:req.body.question_id}})
+    res.json({code: 200, data: answers})
 }
 
 const getAnswer = async(req,res) => {

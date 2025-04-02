@@ -71,14 +71,11 @@ router.post('/createQuestion', (req, res) => {
                     }
 
                     console.log('File renamed successfully:', newPath);
-                    res.status(200).json({ message: 'Question created and file uploaded', questionId });
                 });
             } else {
-                res.status(200).json({ message: 'Question created without a file', questionId });
             }
         }).catch((dbErr) => {
             console.error('Error creating question:', dbErr);
-            res.status(500).json({ error: dbErr.message });
         });
     });
 });
