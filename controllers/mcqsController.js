@@ -73,12 +73,15 @@ const reviewMcqsBySubjectID = async(req,res) => {
     const mcq = await mcqs.findAll({
         include:[{
             model: Topic,
+            required: true,
             attributes:[['id','topic_id'],['name','topic_name']],
             include:[{
                 model: chapter,
+                required: true,
                 attributes:[['name','chapter_name'],['id','chapter_id']],
                 include:[{
                     model: subject,
+                    required: true,
                     attributes:[['id','subject_id'],['name','subject_name']],
                     where: {
                         id: req.body.subject_id
@@ -88,6 +91,7 @@ const reviewMcqsBySubjectID = async(req,res) => {
         }]
     })
     if(mcq) {
+        console.log("MCQS fetched", mcq);
         const transformedData = mcq.map(item => {
             const plainItem = item.toJSON();  
             return {
