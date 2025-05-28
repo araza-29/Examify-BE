@@ -30,7 +30,7 @@ const reviewUser = async(req,res) => {
 const loginUser = async(req,res) => {
     const users = await user.findOne({where:{email:req.body.email, password:req.body.password, role_id: req.body.role_id}})
     if(users === null) {
-        res.json(300).send("USER NOT FOUND !")
+        res.json({code: 300, message: "USER NOT FOUND !"})
     }
     else {
         res.json({code: 200, data: users});

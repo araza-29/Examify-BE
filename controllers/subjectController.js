@@ -28,8 +28,25 @@ const reviewSubjectByUserID = async(req,res) => {
 }
 
 const reviewSubjectsByClassID = async(req,res) => {
-    const subjects = await subject.findAll({where:{ class_id:req.body.class_id}})
-    res.json({code: 200, data: subjects});
+    let class_id = req.body.class_id
+    let user_id = req.body.user_id
+
+    const subjects = await teacher.findAll({include:[{model:subject, required:true, attributes:['name']}], attributes: ['subject_id'], where: {user_id: user_id, class_id: class_id},raw:true})
+    const result = subjects.map(item=>{
+        return {
+            name:item["subject.name"],
+            id: item["subject_id"]
+        };
+    });
+
+    if(result){
+        return res.json({code:200,status:true,message:"data found",data: result})
+    
+    }else{
+
+        return res.json({code:400,status:false,message:"data not found",data:[]})
+    
+    }
 }
 
 module.exports = {
