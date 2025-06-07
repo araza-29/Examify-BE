@@ -1,5 +1,5 @@
 const db = require('../Model')
-const chapter = db.chapter
+const chapter = db.cchapter
 
 const createChapter = async(req,res) => {
     const chapterInfo = {

@@ -1,5 +1,5 @@
 const db = require('../Model')
-const topic = db.topic
+const topic = db.ctopic
 
 const createTopic = async(req,res) => {
     const topicInfo = {

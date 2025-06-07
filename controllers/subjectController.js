@@ -1,5 +1,6 @@
 const db = require('../Model')
 const subject = db.subject
+const teacher = db.teacher
 
 const createSubject = async(req,res) => {
     const subjectInfo = {
@@ -23,7 +24,7 @@ const deleteSubject = async(req,res) => {
 }
 
 const reviewSubjectByUserID = async(req,res) => {
-    const subjects = await subject.findAll({where:{user_id: req.body.user_id}})
+    const subjects = await teacher.findAll({where:{user_id: req.body.user_id}})
     res.json({code: 200, data: subjects});
 }
 

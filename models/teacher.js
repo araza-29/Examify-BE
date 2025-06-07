@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     subject_id: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     status: {
