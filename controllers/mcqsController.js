@@ -115,50 +115,15 @@ const reviewMcqsBySubjectID = async(req,res) => {
     }
 }
 const reviewMcqsByUserID = async(req,res) => {
-    const mcq = await mcqs.findAll({
-        include:[{
-            model: Topic,
-            attributes: [['id','topic_id'],['name', 'topic_name']],
-            include: [{
-                model: chapter,
-                attributes: [['name','chapter_name'],['id','chapter_id']],
-                include:[{
-                    model: subject,
-                    attributes: [['id','subject_id'],['name','subject_name']],
-                    where: {
-                        user_id: req.body.user_id
-                    },
-                    required: false 
-                }]
-            }]
-    }],
-    where: {
-        [Op.or]: [
-            { type: 'public' },
+    const mcq = await mcqs.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id IN (SELECT subject_id FROM teacher WHERE user_id = :uid) AND class_id IN (SELECT class_id FROM teacher WHERE user_id = :uid)",
             {
-                '$Topic.chapter.subject.user_id$': req.body.user_id
-            }
-        ]
-    }
-    });
+            replacements: { uid: req.user_id },
+            type: Sequelize.QueryTypes.SELECT
+        }
+        )
     if(mcq) {
-        const transformedData = mcq.map(item => {
-            const plainItem = item.toJSON();  
-            return {
-                ...plainItem,
-                topic_id: plainItem.topic.topic_id,
-                chapter_id: plainItem.topic.chapter.chapter_id,
-                topic_name: plainItem.topic.topic_name,
-                chapter_name: plainItem.topic.chapter.chapter_name,
-                subject_name: plainItem.topic.chapter.subject.subject_name,
-                subject_id: plainItem.topic.chapter.subject.subject_id,
-                topic: undefined,
-                chapter: undefined,
-                subject: undefined
-            };
-        });
-        console.log(transformedData);
-        res.json({code: 200, data: transformedData});
+        console.log(mcq);
+        res.json({code: 200, data: mcq});
     }
     else {
         res.json({code: 300, data: []})
