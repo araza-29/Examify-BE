@@ -1,33 +1,49 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class_', {
+  return sequelize.define('expense', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    center_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    name: {
+    account_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    transaction_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    description: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    total_students: {
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    amount: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    status: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      defaultValue: "1"
+    balance: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    center_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'class',
-    timestamps: false,
+    tableName: 'expense',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

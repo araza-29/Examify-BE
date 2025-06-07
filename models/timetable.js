@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class_', {
+  return sequelize.define('timetable', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -11,23 +11,38 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    total_students: {
+    teacher_id: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    class_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    subject_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    day: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    start_slot_time: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     status: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      defaultValue: "1"
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    end_slot_time: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'class',
-    timestamps: false,
+    tableName: 'timetable',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

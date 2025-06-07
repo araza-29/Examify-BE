@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class_', {
+  return sequelize.define('leave_form', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -11,23 +11,42 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    total_students: {
+    student_id: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    status: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      defaultValue: "1"
+    reason: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    start_date_time: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    end_date_time: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    leave_file: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    type: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    Status: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'class',
-    timestamps: false,
+    tableName: 'leave_form',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

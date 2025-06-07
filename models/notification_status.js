@@ -1,37 +1,33 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('center', {
+  return sequelize.define('notification_status', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    logo: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: 1
-    },
-    address: {
-      type: DataTypes.STRING(255),
+    center_id: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
-    phone_no: {
-      type: DataTypes.STRING(255),
+    notifications_id: {
+      type: DataTypes.INTEGER,
       allowNull: true
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    seen_status: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     }
   }, {
     sequelize,
-    tableName: 'center',
-    timestamps: false,
+    tableName: 'notification_status',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

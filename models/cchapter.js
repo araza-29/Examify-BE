@@ -1,37 +1,36 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('center', {
+  return sequelize.define('cchapter', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
+    center_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    subject_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     name: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    logo: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: 1
-    },
-    address: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    phone_no: {
-      type: DataTypes.STRING(255),
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    class_id: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'center',
-    timestamps: false,
+    tableName: 'cchapter',
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

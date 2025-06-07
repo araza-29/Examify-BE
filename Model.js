@@ -1,3 +1,4 @@
+const { noTrueLogging } = require('sequelize/lib/utils/deprecations')
 const config = require('./config')
 const {Sequelize,DataTypes} = require('sequelize')
 
@@ -22,14 +23,18 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-db.sequelize.sync({ alter: false })
+db.sequelize.sync({ alter: true })
 .then(()=>{
     console.log("re-sync done!")
 })
 
 db.center = require('./models/center')(sequelize,DataTypes)
+db.cchapter = require('./models/cchapter')(sequelize,DataTypes)
+db.ctopic = require('./models/ctopic')(sequelize,DataTypes)
+db.teacher = require('./models/teacher')(sequelize,DataTypes)
+db.u_role = require('./models/u_role')(sequelize,DataTypes)
 db.roles = require('./models/roles')(sequelize,DataTypes)
-db.user = require('./models/users')(sequelize,DataTypes)
+db.user = require('./models/user')(sequelize,DataTypes)
 db.topic = require('./models/topic')(sequelize,DataTypes)
 db.class = require('./models/class')(sequelize,DataTypes)
 db.subject = require('./models/subject')(sequelize,DataTypes)
@@ -43,12 +48,6 @@ db.paper = require('./models/paper')(sequelize,DataTypes)
 db.key = require('./models/key')(sequelize,DataTypes)
 db.questionMapping = require('./models/questionMapping')(sequelize, DataTypes)
 db.section = require('./models/section')(sequelize,DataTypes)
-
-// User
-db.roles.hasMany(db.user,{
-    foreignKey:'role_id'
-})
-db.user.belongsTo(db.roles,{ foreignKey:'role_id' })
 
 
 // Class
@@ -68,36 +67,50 @@ db.section.belongsTo(db.paper,{
 })
 
 // Subject
-db.class.hasMany(db.subject, {
-    foreignKey: 'class_id'
+db.center.hasMany(db.subject, {
+    foreignKey: 'center_id'
 })
-db.subject.belongsTo(db.class, {
-    foreignKey: 'class_id'
+db.subject.belongsTo(db.center, {
+    foreignKey: 'center_id'
 })
 
-db.user.hasMany(db.subject, {
-    foreignKey: 'user_id'
-})
-db.subject.belongsTo(db.user, {
-    foreignKey: 'user_id'
-})
 
 
 // Chapter
-db.subject.hasMany(db.chapter, {
+db.subject.hasMany(db.cchapter, {
     foreignKey: 'subject_id'
 })
-db.chapter.belongsTo(db.subject, {
+db.cchapter.belongsTo(db.subject, {
     foreignKey: 'subject_id'
 })
 
+db.center.hasMany(db.cchapter, {
+    foreignKey: 'center_id'
+})
+db.cchapter.belongsTo(db.center, {
+    foreignKey: 'center_id'
+})
+
+db.class.hasMany(db.cchapter, {
+    foreignKey: 'class_id'
+})
+db.cchapter.belongsTo(db.class, {
+    foreignKey: 'class_id'
+})
 
 // Topic
-db.chapter.hasMany(db.topic, {
+db.cchapter.hasMany(db.ctopic, {
     foreignKey: 'chapter_id'
 })
-db.topic.belongsTo(db.chapter, {
+db.ctopic.belongsTo(db.cchapter, {
     foreignKey: 'chapter_id'
+})
+
+db.center.hasMany(db.ctopic, {
+    foreignKey: 'center_id'
+})
+db.ctopic.belongsTo(db.center, {
+    foreignKey: 'center_id'
 })
 
 
@@ -206,6 +219,22 @@ db.section.hasMany(db.questionMapping, {
 })
 db.questionMapping.belongsTo(db.section, {
     foreignKey: 'section_id'
+})
+
+//Teacher
+
+db.center.hasMany(db.teacher, {
+    foreignKey: 'center_id'
+})
+db.teacher.belongsTo(db.center, {
+    foreignKey: 'center_id'
+})
+
+db.user.hasMany(db.teacher, {
+    foreignKey: 'user_id'
+})
+db.teacher.belongsTo(db.user, {
+    foreignKey: 'user_id'
 })
 
 module.exports = db

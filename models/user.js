@@ -1,36 +1,44 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('center', {
+  return sequelize.define('user', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING(50),
-      allowNull: false
+    center_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
-    logo: {
+    name: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: 1
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "1"
     },
-    address: {
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    password: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
     phone_no: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    role_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'center',
+    tableName: 'user',
     timestamps: false,
     indexes: [
       {
