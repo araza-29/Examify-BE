@@ -119,7 +119,7 @@ router.post("/createClass",classController.createClass)
 router.post("/deleteClass",classController.deleteClass)
 router.post("/reviewClass",classController.reviewClass)
 router.post("/updateClass",classController.updateClass)
-router.post("/reviewClasses",classController.reviewClasses)
+router.post("/reviewClassesByUserID",classController.reviewClassesByUserID)
 
 // Mcqs
 router.post("/createMCQ",mcqsController.createMcqs)

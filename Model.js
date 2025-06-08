@@ -237,4 +237,11 @@ db.teacher.belongsTo(db.user, {
     foreignKey: 'user_id'
 })
 
+db.subject.hasMany(db.teacher, {
+    foreignKey: 'subject_id'
+})
+db.teacher.belongsTo(db.subject, {
+    foreignKey: 'subject_id'
+})
+
 module.exports = db

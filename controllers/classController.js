@@ -1,5 +1,8 @@
 const db = require('../Model')
 const classes = db.class
+const teacher = db.teacher
+const sequelize = db.sequelize
+const Sequelize = db.Sequelize
 
 const createClass = async(req,res) => {
     const classInfo = {
@@ -25,9 +28,15 @@ const reviewClass = async(req,res) => {
     res.json(200).send(clas)
 }
 
-const reviewClasses = async(req,res) => {
-    const clas = await classes.findAll({where:{id:req.paramas.id}})
-    res.json(200).send(clas)
+const reviewClassesByUserID = async(req,res) => {
+    const clas = await sequelize.query("Select c.* from teacher t join class c on t.class_id = c.id where t.user_id = :uid",
+        {
+            replacements: { uid: req.body.user_id },
+            type: Sequelize.QueryTypes.SELECT
+        }
+
+    )
+    res.json({code: 200, data: clas})
 }
 
 module.exports = {
@@ -35,5 +44,5 @@ module.exports = {
     updateClass,
     deleteClass,
     reviewClass,
-    reviewClasses
+    reviewClassesByUserID
 }
