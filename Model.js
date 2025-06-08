@@ -23,7 +23,7 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-db.sequelize.sync({ force: false })
+db.sequelize.sync({ alter: true })
 .then(()=>{
     console.log("re-sync done!")
 })
@@ -115,10 +115,10 @@ db.ctopic.belongsTo(db.center, {
 
 
 // Questions
-db.topic.hasMany(db.questions, {
+db.ctopic.hasMany(db.questions, {
     foreignKey: 'topic_id'
 })
-db.questions.belongsTo(db.topic, {
+db.questions.belongsTo(db.ctopic, {
     foreignKey: 'topic_id'
 })
 
@@ -132,10 +132,10 @@ db.answer.belongsTo(db.questions, {
 })
 
 // MCQs
-db.topic.hasMany(db.mcqs, {
+db.ctopic.hasMany(db.mcqs, {
     foreignKey: 'topic_id'
 })
-db.mcqs.belongsTo(db.topic, {
+db.mcqs.belongsTo(db.ctopic, {
     foreignKey: 'topic_id'
 })
 
