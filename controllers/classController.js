@@ -29,7 +29,7 @@ const reviewClass = async(req,res) => {
 }
 
 const reviewClassesByUserID = async(req,res) => {
-    const clas = await sequelize.query("Select c.* from teacher t join class c on t.class_id = c.id where t.user_id = :uid",
+    const clas = await sequelize.query("Select Distinct c.* from teacher t join class c on t.class_id = c.id where t.user_id = :uid",
         {
             replacements: { uid: req.body.user_id },
             type: Sequelize.QueryTypes.SELECT
