@@ -29,10 +29,10 @@ const reviewSubjectByUserID = async(req,res) => {
 }
 
 const reviewSubjectsByClassID = async(req,res) => {
-    const results = await teacher.findAll({attributes:[], include:[{model: subject, required: true, attributes: ['id', 'name']}],where:{ class_id:req.body.class_id}, raw: true, nest: true})
+    const results = await teacher.findAll({attributes:[], include:[{model: subject, required: true, attributes: ['id', 'name']}],where:{ class_id:req.body.class_id}, raw: true, nest: false})
     const subjects = results.map(item => ({
-    id: item.subject.id,
-    name: item.subject.name
+        id: item['subject.id'],
+        name: item['subject.name']
     }));
     res.json({code: 200, data: subjects});
 }

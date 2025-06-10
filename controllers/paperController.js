@@ -40,23 +40,22 @@ const reviewAllPaperByUserID = async(req,res) => {
         include: [
           {
             model: subject,
-            attributes: [["name", "subject_name"]],
-            include: [
-              {
-                model: classes,
-                attributes: [["name", "class_name"]],
-              },
-            ],
+            attributes: ["name"]
           },
+          {
+            model: classes,
+            attributes: ["name"],
+          }
         ],
+        raw: true,
+        nest: true
       });
       if(papers) {
+        console.log(papers)
         const transformedData = papers.map(item => {
-            const plainItem = item.toJSON();  
             return {
-                ...plainItem,
-                class_name: plainItem.subject.class.class_name,
-                subject_name: plainItem.subject.subject_name,
+                class_name: item.class_.name,
+                subject_name: item.subject.name,
                 class: undefined,
                 subject: undefined
             };

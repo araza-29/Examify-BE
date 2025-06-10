@@ -23,7 +23,7 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-db.sequelize.sync({ alter: true })
+db.sequelize.sync({ alter: false })
 .then(()=>{
     console.log("re-sync done!")
 })
@@ -185,6 +185,13 @@ db.subject.hasMany(db.paper, {
 })
 db.paper.belongsTo(db.subject, {
     foreignKey: 'subject_id'
+})
+
+db.class.hasMany(db.paper, {
+    foreignKey: 'class_id'
+})
+db.paper.belongsTo(db.class, {
+    foreignKey: 'class_id'
 })
 
 db.user.hasMany(db.paper, {
