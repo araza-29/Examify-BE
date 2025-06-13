@@ -54,6 +54,7 @@ const reviewAllPaperByUserID = async(req,res) => {
         console.log(papers)
         const transformedData = papers.map(item => {
             return {
+                ...item,
                 class_name: item.class_.name,
                 subject_name: item.subject.name,
                 class: undefined,

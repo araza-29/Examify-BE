@@ -1,5 +1,6 @@
 const db = require('../Model')
 const { Sequelize, Op } = require('sequelize');
+const sequelize = db.sequelize
 const mcqs = db.mcqs
 const Topic = db.topic
 const chapter = db.chapter
@@ -115,9 +116,9 @@ const reviewMcqsBySubjectID = async(req,res) => {
     }
 }
 const reviewMcqsByUserID = async(req,res) => {
-    const mcq = await mcqs.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id IN (SELECT subject_id FROM teacher WHERE user_id = :uid) AND class_id IN (SELECT class_id FROM teacher WHERE user_id = :uid)",
-            {
-            replacements: { uid: req.user_id },
+    const mcq = await sequelize.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id IN (SELECT subject_id FROM teacher WHERE user_id = :uid) AND class_id IN (SELECT class_id FROM teacher WHERE user_id = :uid)",
+        {
+            replacements: { uid: req.body.user_id },
             type: Sequelize.QueryTypes.SELECT
         }
         )
