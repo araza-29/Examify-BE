@@ -1,6 +1,6 @@
 const db = require('../Model')
 const user = db.user
-
+const Op = db.Op
 const createUser = async(req,res) => {
     const userInfo = {
     name: req.body.name,
@@ -28,7 +28,7 @@ const reviewUser = async(req,res) => {
 }
 
 const loginUser = async(req,res) => {
-    const users = await user.findOne({where:{email:req.body.email, password:req.body.password, role_id: req.body.role_id}})
+    const users = await user.findOne({where:{email:req.body.email, password:req.body.password, role_id: {[Op.like]: `%${req.body.role_id}%`}}})
     if(users === null) {
         res.json({code: 300, message: "USER NOT FOUND !"})
     }

@@ -36,11 +36,23 @@ module.exports = function(sequelize,DataTypes) {
             allowNull: false
         },
         date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        due_date: {
+            type: DataTypes.DATEONLY, 
+            allowNull: false,
+        },
+        time: {
+            type: DataTypes.TIME,
             allowNull: false,
         },
         month: {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        type: {
+            type: DataTypes.STRING,
             allowNull: false
         },
         completed: {
@@ -60,12 +72,12 @@ module.exports = function(sequelize,DataTypes) {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-          },
-          updatedAt: {
+        },
+        updatedAt: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-          }
+        }
     }, 
     {
         sequelize,

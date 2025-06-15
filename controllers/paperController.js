@@ -11,6 +11,8 @@ const createPaper = async(req,res) => {
         completed: req.body.completed,
         instruction: req.body.instruction,
         date: req.body.date,
+        due_date: req.body.due_date,
+        type: req.body.type,
         year: req.body.year,
         marks: req.body.marks,
         duration: req.body.duration,
@@ -20,7 +22,7 @@ const createPaper = async(req,res) => {
 }
 
 const updatePaper = async(req,res) => {
-    const papers = await paper.update({completed: req.body.completed}, {where: {id: req.body.paper_id}})
+    const papers = await paper.update(req.body, {where: {id: req.body.paper_id}})
     res.json({code:200, data: papers})
 }
 
@@ -57,6 +59,8 @@ const reviewAllPaperByUserID = async(req,res) => {
                 ...item,
                 class_name: item.class_.name,
                 subject_name: item.subject.name,
+                date: item.date ? item.date.split('-').reverse().join('-') : null,
+                due_date: item.due_date ? item.due_date.split('-').reverse().join('-') : null,
                 class: undefined,
                 subject: undefined
             };

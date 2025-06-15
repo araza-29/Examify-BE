@@ -1,6 +1,6 @@
 const { noTrueLogging } = require('sequelize/lib/utils/deprecations')
 const config = require('./config')
-const {Sequelize,DataTypes} = require('sequelize')
+const {Sequelize,DataTypes, Op} = require('sequelize')
 
 const sequelize = new Sequelize (
     config.DB,
@@ -28,6 +28,7 @@ db.sequelize.sync({ alter: true })
     console.log("re-sync done!")
 })
 
+db.Op = Op
 db.center = require('./models/center')(sequelize,DataTypes)
 db.cchapter = require('./models/cchapter')(sequelize,DataTypes)
 db.ctopic = require('./models/ctopic')(sequelize,DataTypes)
@@ -45,6 +46,7 @@ db.answer = require('./models/answer')(sequelize,DataTypes)
 db.checkers = require('./models/checkers')(sequelize,DataTypes)
 db.chapter = require('./models/chapter')(sequelize,DataTypes)
 db.paper = require('./models/paper')(sequelize,DataTypes)
+db.feedback = require('./models/feedback')(sequelize,DataTypes)
 db.key = require('./models/key')(sequelize,DataTypes)
 db.questionMapping = require('./models/questionMapping')(sequelize, DataTypes)
 db.section = require('./models/section')(sequelize,DataTypes)
@@ -249,6 +251,22 @@ db.subject.hasMany(db.teacher, {
 })
 db.teacher.belongsTo(db.subject, {
     foreignKey: 'subject_id'
+})
+
+//Feedback
+
+db.paper.hasMany(db.feedback, {
+    foreignKey: 'paper_id'
+})
+db.feedback.belongsTo(db.paper, {
+    foreignKey: 'paper_id'
+})
+
+db.paper.hasMany(db.user, {
+    foreignKey: 'user_id'
+})
+db.user.belongsTo(db.paper, {
+    foreignKey: 'user_id'
 })
 
 module.exports = db
