@@ -127,7 +127,7 @@ router.post("/deleteMCQ",mcqsController.deleteMcqs)
 router.post("/reviewMCQByUserID",mcqsController.reviewMcqsByUserID)
 router.post("/reviewMCQBySubjectID",mcqsController.reviewMcqsBySubjectID)
 router.post("/updateMCQ",mcqsController.updateMcqs)
-router.post("/reviewMCQ",mcqsController.reviewMcq)
+// router.post("/reviewMCQ",mcqsController.reviewMcq)
 
 // Question
 // router.post("/createQuestion", function(req, res) {

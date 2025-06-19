@@ -29,10 +29,6 @@ const reviewSectionByPaperID = async(req,res) => {
         marks: sec.marks
       }));
     res.json({code: 200, data: transformedSections})
-    setTimeout(async () => {
-        await section.destroy({ where: { paper_id: req.body.paper_id }});
-        console.log("Mappings deleted for paper ID:", req.body.paper_id);
-      }, 5000);
 }
 
 const reviewSectionsCheck = async(req,res) => {

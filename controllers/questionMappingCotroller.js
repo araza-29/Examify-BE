@@ -61,15 +61,6 @@ const reviewQuestionsByPaperID = async (req, res) => {
         message: "Mappings retrieved successfully",
       });
   
-      // Delete mappings **after** sending the response
-      setTimeout(async () => {
-        await questionMapping.destroy({
-            where: { paper_id: req.body.paper_id, question_id: { [Op.ne]: null } },
-          });
-        console.log("Mappings deleted for paper ID:", req.body.paper_id);
-      }, 5000);
-  
-  
     } catch (error) {
       console.error("Error in reviewQuestionsByPaperID:", error);
       res.status(500).json({ code: 500, message: "Internal Server Error" });
