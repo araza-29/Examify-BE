@@ -199,6 +199,7 @@ router.post('/updateKey',keyController.updateKey)
 // Question Mapping
 router.post('/createQuestionMapping',questionMappingController.createQuestionMapping)
 router.post('/deleteQuestionMapping',questionMappingController.deleteQuestionMapping)
+router.post('/deleteMCQMapping',questionMappingController.deleteMCQMapping)
 router.post('/reviewQuestionsByPaperID',questionMappingController.reviewQuestionsByPaperID)
 router.post('/reviewMCQsByPaperID',questionMappingController.reviewMCQsByPaperID)
 router.post('/reviewPastPaperQuestions',questionMappingController.reviewPastPaperQuestions)
@@ -210,6 +211,7 @@ router.post('/createSection',section.createSection)
 router.post('/deleteSection',section.deleteSection)
 router.post('/reviewSectionByPaperID',section.reviewSectionByPaperID)
 router.post('/reviewSectionCheck',section.reviewSectionsCheck)
+router.post('/updateSections',section.updateSections)
 
 
 module.exports = router

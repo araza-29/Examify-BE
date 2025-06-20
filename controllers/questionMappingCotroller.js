@@ -21,11 +21,23 @@ const updateQuestionMapping = async (req, res) => {
 };
 
 const deleteQuestionMapping = async (req, res) => {
-  const mapping = await questionMapping.update(
-    { status: false },
-    { where: { id: req.paramas.id } }
-  );
-  res.json(200).send(mapping);
+  const result = await questionMapping.destroy({
+    where: {
+      paper_id: req.body.paper_id,
+      question_id: req.body.question_id
+    }
+  });
+  res.json({code: 200, data: "Mapping deleted! "});
+};
+
+const deleteMCQMapping = async (req, res) => {
+  const result = await questionMapping.destroy({
+    where: {
+      paper_id: req.body.paper_id,
+      mcqs_id: req.body.mcq_id
+    }
+  });
+  res.json({code: 200, data: "Mapping deleted! "});
 };
 
 const reviewQuestionMapping = async (req, res) => {
@@ -95,14 +107,6 @@ const reviewQuestionsByPaperID = async (req, res) => {
         message: "Mappings retrieved successfully",
       });
   
-      // Delete mappings **after** sending the response
-      setTimeout(async () => {
-        await questionMapping.destroy({
-            where: { paper_id: req.body.paper_id, mcqs_id: { [Op.ne]: null } },
-          });
-        console.log("Mappings deleted for paper ID:", req.body.paper_id);
-      }, 5000);
-  
     } catch (error) {
       console.error("Error in reviewMCQsByPaperID:", error);
       res.status(500).json({ code: 500, message: "Internal Server Error" });
@@ -121,6 +125,7 @@ module.exports = {
   createQuestionMapping,
   updateQuestionMapping,
   deleteQuestionMapping,
+  deleteMCQMapping,
   reviewQuestionsByPaperID,
   reviewMCQsByPaperID,
   reviewPastPaperQuestions,

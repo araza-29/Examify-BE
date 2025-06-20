@@ -36,9 +36,15 @@ const reviewSectionsCheck = async(req,res) => {
     res.json({code: 200, data: sections})
 }
 
+const updateSections = async(req,res) => {
+    const sections = await section.update(req.body);
+    res.json({code: 200, data: sections})
+}
+
 module.exports = {
     createSection,
     deleteSection,
     reviewSectionByPaperID,
-    reviewSectionsCheck
+    reviewSectionsCheck,
+    updateSections
 }
