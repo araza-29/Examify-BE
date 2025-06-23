@@ -23,7 +23,7 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-db.sequelize.sync({ alter: true })
+db.sequelize.sync({ force: false })
 .then(()=>{
     console.log("re-sync done!")
 })
@@ -42,7 +42,7 @@ db.subject = require('./models/subject')(sequelize,DataTypes)
 db.questions = require('./models/questions')(sequelize,DataTypes)
 db.mcqs = require('./models/mcqs')(sequelize,DataTypes)
 db.choices = require('./models/choices')(sequelize,DataTypes)
-db.answer = require('./models/answer')(sequelize,DataTypes)
+db.answer = require('./models/answer')(sequelize,DataTypes) 
 db.checkers = require('./models/checkers')(sequelize,DataTypes)
 db.chapter = require('./models/chapter')(sequelize,DataTypes)
 db.paper = require('./models/paper')(sequelize,DataTypes)

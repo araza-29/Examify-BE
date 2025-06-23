@@ -2,6 +2,7 @@ const db = require('../Model')
 const paper = db.paper
 const subject = db.subject
 const classes = db.class
+const center = db.center
 
 const createPaper = async(req,res) => {
     const paperInfo = {
@@ -47,6 +48,10 @@ const reviewAllPaperByUserID = async(req,res) => {
           {
             model: classes,
             attributes: ["name"],
+            include: [{
+                model: center,
+                attributes: ["name"],
+            }]
           }
         ],
         raw: true,
@@ -59,9 +64,10 @@ const reviewAllPaperByUserID = async(req,res) => {
                 ...item,
                 class_name: item.class_.name,
                 subject_name: item.subject.name,
+                center_name: item.class_.center.name,
                 date: item.date ? item.date.split('-').reverse().join('-') : null,
                 due_date: item.due_date ? item.due_date.split('-').reverse().join('-') : null,
-                class: undefined,
+                class_: undefined,
                 subject: undefined
             };
         });
