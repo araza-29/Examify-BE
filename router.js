@@ -201,6 +201,7 @@ router.post('/createQuestionMapping',questionMappingController.createQuestionMap
 router.post('/deleteQuestionMapping',questionMappingController.deleteQuestionMapping)
 router.post('/deleteMCQMapping',questionMappingController.deleteMCQMapping)
 router.post('/reviewQuestionsByPaperID',questionMappingController.reviewQuestionsByPaperID)
+router.post('/reviewQuestionsWithAnswerByPaperID',questionMappingController.reviewQuestionsWithAnswerByPaperID)
 router.post('/reviewMCQsByPaperID',questionMappingController.reviewMCQsByPaperID)
 router.post('/reviewPastPaperQuestions',questionMappingController.reviewPastPaperQuestions)
 router.post('/reviewQuestionMapping',questionMappingController.reviewQuestionMapping)

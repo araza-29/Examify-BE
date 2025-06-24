@@ -3,6 +3,8 @@ const paper = db.paper
 const subject = db.subject
 const classes = db.class
 const center = db.center
+const user = db.user
+const userPapers = db.userPapers
 
 const createPaper = async(req,res) => {
     const paperInfo = {
@@ -71,8 +73,13 @@ const reviewAllPaper = async(req,res) => {
 
 const reviewAllPaperByUserID = async(req,res) => {
     const papers = await paper.findAll({
-        where: { user_id: req.body.user_id },
+        where: {},
         include: [
+        { 
+            model: userPapers,
+            where: { user_id: req.body.user_id },  // match user.id
+            attributes: [] 
+        },
           {
             model: subject,
             attributes: ["name"]

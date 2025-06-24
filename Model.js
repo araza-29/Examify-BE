@@ -23,7 +23,7 @@ const db = {}
 
 db.Sequelize = Sequelize
 db.sequelize = sequelize
-db.sequelize.sync({ force: false })
+db.sequelize.sync({ alter: true })
 .then(()=>{
     console.log("re-sync done!")
 })
@@ -50,6 +50,7 @@ db.feedback = require('./models/feedback')(sequelize,DataTypes)
 db.key = require('./models/key')(sequelize,DataTypes)
 db.questionMapping = require('./models/questionMapping')(sequelize, DataTypes)
 db.section = require('./models/section')(sequelize,DataTypes)
+db.userPapers = require('./models/userPapers')(sequelize,DataTypes)
 
 
 // Class
@@ -196,12 +197,20 @@ db.paper.belongsTo(db.class, {
     foreignKey: 'class_id'
 })
 
-db.user.hasMany(db.paper, {
-    foreignKey: 'user_id'
+db.user.hasMany(db.userPapers, {
+    foreignKey: "user_id"
 })
-db.paper.belongsTo(db.user, {
-    foreignKey: 'user_id'
+db.userPapers.belongsTo(db.user, {
+    foreignKey: "user_id"
 })
+
+db.paper.hasMany(db.userPapers, {
+    foreignKey: "paper_id"
+})
+db.userPapers.belongsTo(db.paper, {
+    foreignKey: "paper_id"
+})
+
 //questionMapping
 
 db.paper.hasMany(db.questionMapping, {

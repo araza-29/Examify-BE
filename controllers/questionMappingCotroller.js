@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const questionMapping = db.questionMapping;
 const questions = db.questions;
 const mcqs = db.mcqs;
+const answer = db.answer
 
 const createQuestionMapping = async (req, res) => {
   const info = {
@@ -47,11 +48,12 @@ const reviewQuestionMapping = async (req, res) => {
   res.json(200).send(mapping);
 };
 
+
 const reviewQuestionsByPaperID = async (req, res) => {
     try {
       const mapping = await questionMapping.findAll({
         where: { paper_id: req.body.paper_id },
-        include: [{ model: questions, required: true }],
+        include: [{ model: questions, required: true}],
       });
   
       const transformedData = mapping.map((item) => {
@@ -62,6 +64,41 @@ const reviewQuestionsByPaperID = async (req, res) => {
           name: plainItem.question.name,
           marks: plainItem.question.marks,
           image: plainItem.question.image,
+        };
+      });
+  
+      console.log(transformedData);
+  
+      res.json({
+        code: 200,
+        data: transformedData,
+        message: "Mappings retrieved successfully",
+      });
+  
+    } catch (error) {
+      console.error("Error in reviewQuestionsByPaperID:", error);
+      res.status(500).json({ code: 500, message: "Internal Server Error" });
+    }
+  };
+
+  const reviewQuestionsWithAnswerByPaperID = async (req, res) => {
+    try {
+      const mapping = await questionMapping.findAll({
+        where: { paper_id: req.body.paper_id },
+        include: [{ model: questions, required: true , include:[{model: answer, required: true}]}],
+      });
+  
+      const transformedData = mapping.map((item) => {
+        const plainItem = item.toJSON();
+        return {
+          ...plainItem,
+          id: plainItem.question.id,
+          name: plainItem.question.name,
+          marks: plainItem.question.marks,
+          image: plainItem.question.image,
+          answer: plainItem.question.answers[0].answer,
+          answers: undefined,
+          question: undefined
         };
       });
   
@@ -96,6 +133,8 @@ const reviewQuestionsByPaperID = async (req, res) => {
           choice2: plainItem.mcq.choice2,
           choice3: plainItem.mcq.choice3,
           choice4: plainItem.mcq.choice4,
+          answer: plainItem.mcq.answer,
+          mcq: undefined
         };
       });
   
@@ -127,6 +166,7 @@ module.exports = {
   deleteQuestionMapping,
   deleteMCQMapping,
   reviewQuestionsByPaperID,
+  reviewQuestionsWithAnswerByPaperID,
   reviewMCQsByPaperID,
   reviewPastPaperQuestions,
   reviewQuestionMapping,
