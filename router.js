@@ -187,7 +187,7 @@ router.post("/loginUser",userController.loginUser)
 router.post("/createPaper",paperController.createPaper)
 router.post("/updatePaper",paperController.updatePaper)
 router.post("/deletePaper",paperController.deletePaper)
-router.post("/reviewPaper",paperController.reviewPaper)
+router.post("/reviewAllPaper",paperController.reviewAllPaper)
 router.post("/reviewAllPaperByUserID",paperController.reviewAllPaperByUserID)
 
 // Key

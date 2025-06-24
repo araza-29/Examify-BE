@@ -37,7 +37,9 @@ const reviewSectionsCheck = async(req,res) => {
 }
 
 const updateSections = async(req,res) => {
-    const sections = await section.update(req.body);
+    const sections = await section.update(req.body, {
+      where: { id: req.body.section_id } 
+    });
     res.json({code: 200, data: sections})
 }
 

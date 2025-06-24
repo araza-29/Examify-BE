@@ -32,9 +32,41 @@ const deletePaper = async(req,res) => {
     res.json(200).send("Paper deleted !")
 }
 
-const reviewPaper = async(req,res) => {
-    const papers = await paper.findOne({where:{id: req.body.paper_id}})
-    res.json({code: 200, data: papers})
+const reviewAllPaper = async(req,res) => {
+    const papers = await paper.findAll({where:{},
+    include: [
+          {
+            model: subject,
+            attributes: ["name"]
+          },
+          {
+            model: classes,
+            attributes: ["name"],
+            include: [{
+                model: center,
+                attributes: ["name"],
+            }]
+          }
+        ],
+        raw: true,
+        nest: true})
+    if(papers) {
+        console.log(papers)
+        const transformedData = papers.map(item => {
+            return {
+                ...item,
+                class_name: item.class_.name,
+                subject_name: item.subject.name,
+                center_name: item.class_.center.name,
+                date: item.date ? item.date.split('-').reverse().join('-') : null,
+                due_date: item.due_date ? item.due_date.split('-').reverse().join('-') : null,
+                class_: undefined,
+                subject: undefined
+            };
+        });
+        console.log(transformedData);
+        res.json({code: 200, data: transformedData});
+        }
 }
 
 const reviewAllPaperByUserID = async(req,res) => {
@@ -80,6 +112,6 @@ module.exports = {
     createPaper,
     updatePaper,
     deletePaper,
-    reviewPaper,
+    reviewAllPaper,
     reviewAllPaperByUserID
 }
