@@ -5,9 +5,9 @@ const classes = db.class
 
 const createFeedback = async(req,res) => {
     const feedbackInfo = {
-        feedback_id: req.body.feedback_id,
         user_id: req.body.user_id,
         review: req.body.review,
+        paper_id: req.body.paper_id
     }
     const feedbacks = await feedback.create(feedbackInfo)
     res.json({code: 200, data:feedbacks})
@@ -32,6 +32,5 @@ module.exports = {
     createFeedback,
     updateFeedback,
     deleteFeedback,
-    reviewFeedback,
     reviewFeedbackByPaperID
 }

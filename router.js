@@ -14,7 +14,7 @@ const paperController = require('./controllers/paperController')
 const keyController = require('./controllers/keyControllers')
 const questionMappingController = require('./controllers/questionMappingCotroller')
 const section = require('./controllers/section.Controller')
-
+const feedback = require("./controllers/feedbackController")
 const router = require("express").Router()
 
 const multer = require('multer');
@@ -214,5 +214,9 @@ router.post('/reviewSectionByPaperID',section.reviewSectionByPaperID)
 router.post('/reviewSectionCheck',section.reviewSectionsCheck)
 router.post('/updateSections',section.updateSections)
 
+router.post("/createFeeback",feedback.createFeedback)
+router.post("/deleteFeeback",feedback.deleteFeedback)
+router.post("/reviewFeedbackByPaperID",feedback.reviewFeedbackByPaperID)
+router.post("/updateFeeback",feedback.updateFeedback)
 
 module.exports = router

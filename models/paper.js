@@ -15,10 +15,6 @@ module.exports = function(sequelize,DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         instruction: {
             type: DataTypes.STRING,
             allowNull: true
