@@ -16,69 +16,35 @@ const questionMappingController = require('./controllers/questionMappingCotrolle
 const section = require('./controllers/section.Controller')
 const feedback = require("./controllers/feedbackController")
 const router = require("express").Router()
-
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 
-// Basic configuration first to test file upload
+// Storage config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/questions/'); // or any folder you want
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname); // Get ".jpg", ".png", etc.
+    const uniqueName = `question-${Date.now()}${ext}`;
+    cb(null, uniqueName);
+  }
+});
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: './uploads',
-        filename: function (req, file, cb) {
-            console.log('Processing file:', file);
-            cb(null, Date.now() + path.extname(file.originalname));
-        }
-    }),
-    // Add limits for debugging
-    limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
-    },
-    // Add debugging to fileFilter
-    fileFilter: function (req, file, cb) {
-        console.log('Received file in filter:', {
-            fieldname: file.fieldname,
-            originalname: file.originalname,
-            mimetype: file.mimetype
-        });
-        cb(null, true);
-    }
-}).single('file');
+  storage: storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // max 2MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const isValid = allowedTypes.test(file.mimetype);
+    if (isValid) cb(null, true);
+    else cb(new Error('Invalid image type.'));
+  }
+});
+
 
 // Route to create a question
-router.post('/createQuestion', (req, res) => {
-    upload(req, res, (err) => {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-
-        console.log('Uploaded file:', req.file);
-
-        // Call the controller to create the question
-        questionController.createQuestion(req, res).then((result) => {
-            const questionId = result.id; // Get the ID from the controller
-            console.log('Question created with ID:', questionId);
-
-            if (req.file) {
-                const oldPath = req.file.path; // Path of the temporary file
-                const newPath = path.join('uploads', `${questionId}${path.extname(req.file.originalname)}`);
-
-                // Rename the file to match the question ID
-                fs.rename(oldPath, newPath, (renameErr) => {
-                    if (renameErr) {
-                        console.error('Error renaming file:', renameErr);
-                        return res.status(500).json({ error: 'Failed to rename file' });
-                    }
-
-                    console.log('File renamed successfully:', newPath);
-                });
-            } else {
-            }
-        }).catch((dbErr) => {
-            console.error('Error creating question:', dbErr);
-        });
-    });
-});
+router.post('/createQuestion',upload.single('image'),questionController.createQuestion);
 
 // Answer
 router.post("/createAnswer",answerController.createAnswer)

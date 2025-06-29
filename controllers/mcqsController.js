@@ -15,7 +15,8 @@ const createMcqs = async(req,res) => {
         choice3: req.body.choice3,
         choice4: req.body.choice4,
         answer: req.body.answer,
-        type: req.body.type
+        type: req.body.type,
+        medium: req.body.medium
     }
     const mcq = await mcqs.create(mcqsInfo)
     res.json({code: 200, data: mcq})
@@ -32,9 +33,9 @@ const deleteMcqs = async(req,res) => {
 }
 
 const reviewMcqsBySubjectID = async(req,res) => {
-    const mcqs = await sequelize.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id = :sid AND class_id =:cid",
+    const mcqs = await sequelize.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id = :sid AND class_id =:cid AND q.medium=:med",
         {
-        replacements: { cid: req.body.class_id, sid: req.body.subject_id },
+        replacements: { cid: req.body.class_id, sid: req.body.subject_id, med: req.body.medium },
         type: Sequelize.QueryTypes.SELECT
         }
     )
