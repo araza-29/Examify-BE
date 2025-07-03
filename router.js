@@ -22,7 +22,7 @@ const path = require('path');
 // Storage config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/questions/'); // or any folder you want
+    cb(null, 'uploads/'); // or any folder you want
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname); // Get ".jpg", ".png", etc.
@@ -45,12 +45,14 @@ const upload = multer({
 
 // Route to create a question
 router.post('/createQuestion',upload.single('image'),questionController.createQuestion);
-
+router.post("/createAnswer",upload.single('image'),answerController.createAnswer)
+router.post("/updateAnswer",upload.single('image'),answerController.updateAnswer)
+router.post("/createMCQ",upload.single('image'),mcqsController.createMcqs)
+router.post("/updateMCQ",upload.single('image'),mcqsController.updateMcqs)
+router.post("/updateQuestion",upload.single('image'),questionController.updateQuestion)
 // Answer
-router.post("/createAnswer",answerController.createAnswer)
 router.post("/deleteAnswer",answerController.deleteAnswer)
 router.post("/reviewAnswer",answerController.reviewAnswer)
-router.post("/updateAnswer",answerController.updateAnswer)
 router.post("/getAnswer",answerController.getAnswer)
 
 // Center
@@ -88,11 +90,9 @@ router.post("/updateClass",classController.updateClass)
 router.post("/reviewClassesByUserID",classController.reviewClassesByUserID)
 
 // Mcqs
-router.post("/createMCQ",mcqsController.createMcqs)
 router.post("/deleteMCQ",mcqsController.deleteMcqs)
 router.post("/reviewMCQByUserID",mcqsController.reviewMcqsByUserID)
 router.post("/reviewMCQBySubjectID",mcqsController.reviewMcqsBySubjectID)
-router.post("/updateMCQ",mcqsController.updateMcqs)
 // router.post("/reviewMCQ",mcqsController.reviewMcq)
 
 // Question
@@ -119,7 +119,6 @@ router.post("/updateMCQ",mcqsController.updateMcqs)
 router.post("/deleteQuestion",questionController.deleteQuestion)
 router.post("/reviewQuestion",questionController.reviewQuestion)
 router.post("/reviewQuestionsBySubjectID",questionController.reviewQuestionsBySubjectId)
-router.post("/updateQuestion",questionController.updateQuestion)
 router.post("/reviewEveryDetailsQuestionsByUserID",questionController.reviewEveryDetailsQuestionsByUserId)
 
 // Roles

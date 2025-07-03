@@ -7,6 +7,7 @@ const chapter = db.chapter
 const subject = db.subject
 
 const createMcqs = async(req,res) => {
+    const imageFilename = req.file ? req.file.filename : null;
     const mcqsInfo = {
         name: req.body.name,
         topic_id: req.body.topic_id,
@@ -16,13 +17,16 @@ const createMcqs = async(req,res) => {
         choice4: req.body.choice4,
         answer: req.body.answer,
         type: req.body.type,
-        medium: req.body.medium
+        medium: req.body.medium,
+        image: imageFilename
     }
     const mcq = await mcqs.create(mcqsInfo)
     res.json({code: 200, data: mcq})
 }
 
 const updateMcqs = async(req,res) => {
+    const imageFilename = req.file ? req.file.filename : null;
+    req.body = {...req.body, image: imageFilename}
     const mcq = await mcqs.update(req.body, {where:{id: req.body.mcq_id}})
     res.json({code: 200, data: mcq})
 }
