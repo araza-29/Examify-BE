@@ -38,14 +38,28 @@ const deleteMcqs = async(req,res) => {
     res.json(200).send(mcq)
 }
 
-const reviewMcqsBySubjectID = async(req,res) => {
+const reviewMcqsBySubjectID = async (req, res) => {
     try {
-        const mcqs = await sequelize.query("SELECT q.*, t.id AS topic_id, t.name AS topic_name, c.id AS chapter_id, c.name AS chapter_name, s.id AS subject_id, s.name AS subject_name, l.id AS class_id, l.name AS class_name FROM mcqs q JOIN ctopic t ON t.id = q.topic_id JOIN cchapter c ON c.id = t.chapter_id JOIN SUBJECT s ON s.id = c.subject_id JOIN class l ON l.id = c.class_id WHERE subject_id = :sid AND class_id =:cid AND q.medium=:med",
+        const mcqs = await sequelize.query(
+            `SELECT q.*, t.id AS topic_id, t.name AS topic_name, 
+             c.id AS chapter_id, c.name AS chapter_name, 
+             s.id AS subject_id, s.name AS subject_name, 
+             l.id AS class_id, l.name AS class_name 
+             FROM mcqs q 
+             JOIN ctopic t ON t.id = q.topic_id 
+             JOIN cchapter c ON c.id = t.chapter_id 
+             JOIN SUBJECT s ON s.id = c.subject_id 
+             JOIN class l ON l.id = c.class_id 
+             WHERE subject_id = :sid AND class_id = :cid AND q.medium = :med`,
             {
-            replacements: { cid: req.body.class_id, sid: req.body.subject_id, med: req.body.medium },
-            type: Sequelize.QueryTypes.SELECT
+                replacements: { 
+                    cid: req.body.class_id, 
+                    sid: req.body.subject_id, 
+                    med: req.body.medium 
+                },
+                type: Sequelize.QueryTypes.SELECT
             }
-        )
+        );
         
         if (!mcqs || mcqs.length === 0) {
             return res.json({ code: 300, data: [] });
@@ -53,67 +67,66 @@ const reviewMcqsBySubjectID = async(req,res) => {
 
         // Process each MCQ to add base64 image data if available
         const processedMCQs = await Promise.all(mcqs.map(async (mcq) => {
-            if (mcq.image && mcq.image !== "null") {
-                try {
-                    const filename = mcq.image;
-                    const imagePath = path.join(__dirname, '../uploads/', filename);
-                    
-                    if (fs.existsSync(imagePath)) {
-                        const imageBuffer = fs.readFileSync(imagePath);
-                        const ext = path.extname(filename).toLowerCase();
-                        
-                        // Check if image is too large for base64 (react-pdf has limits)
-                        if (imageBuffer.length > 1024 * 1024) { // 1MB limit
-                            console.log(`MCQ image ${filename} is too large (${imageBuffer.length} bytes), serving as URL`);
-                            return {
-                                ...mcq,
-                                image: `http://localhost:3000/uploads/${filename}`
-                            };
-                        }
-                        
-                        const base64Data = imageBuffer.toString('base64');
-                        
-                        // Ensure proper MIME type detection
-                        let mimeType = 'image/jpeg'; // default
-                        if (ext === '.png') {
-                            mimeType = 'image/png';
-                        } else if (ext === '.jpg' || ext === '.jpeg') {
-                            mimeType = 'image/jpeg';
-                        } else if (ext === '.gif') {
-                            mimeType = 'image/gif';
-                        }
-                        
-                        // Create properly formatted data URL
-                        const dataUrl = `data:${mimeType};base64,${base64Data}`;
-                        
-                        console.log(`Processing MCQ image: ${filename}, MIME: ${mimeType}, Size: ${imageBuffer.length} bytes`);
-                        
-                        return {
-                            ...mcq,
-                            image: dataUrl
-                        };
-                    } else {
-                        console.warn(`MCQ image file not found: ${imagePath}`);
-                    }
-                } catch (err) {
-                    console.error(`Error processing image for MCQ ${mcq.id}:`, err);
-                    // Fallback to URL
-                    return {
-                        ...mcq,
-                        image: `http://localhost:3000/uploads/${mcq.image}`
-                    };
-                }
+            // Handle question image
+            if (mcq.image && mcq.image !== "null" && mcq.image !== "") {
+                mcq.image = await convertImageToBase64(mcq.image, mcq.id);
             }
+
             return mcq;
         }));
 
-        console.log(processedMCQs);
-        res.json({code: 200, data: processedMCQs});
+        console.log(`Processed ${processedMCQs.length} MCQs with images converted to base64`);
+        res.json({ code: 200, data: processedMCQs });
     } catch (err) {
         console.error('Error in reviewMcqsBySubjectID:', err);
         res.status(500).json({ code: 500, message: 'Server error' });
     }
-}
+};
+
+// Helper function to convert image to base64
+const convertImageToBase64 = async (filename, mcqId) => {
+    try {
+        const imagePath = path.join(__dirname, '../uploads/', filename);
+        
+        if (!fs.existsSync(imagePath)) {
+            console.warn(`Image file not found: ${imagePath}`);
+            return null;
+        }
+
+        const imageBuffer = fs.readFileSync(imagePath);
+        const ext = path.extname(filename).toLowerCase();
+        
+        // Size limit check (2MB limit for better performance)
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        if (imageBuffer.length > maxSize) {
+            console.log(`Image ${filename} is too large (${imageBuffer.length} bytes), serving as URL`);
+            return `http://localhost:3000/uploads/${filename}`;
+        }
+        
+        // Enhanced MIME type detection
+        const mimeTypes = {
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif',
+            '.webp': 'image/webp',
+            '.svg': 'image/svg+xml',
+            '.bmp': 'image/bmp'
+        };
+        
+        const mimeType = mimeTypes[ext] || 'image/jpeg';
+        const base64Data = imageBuffer.toString('base64');
+        const dataUrl = `data:${mimeType};base64,${base64Data}`;
+        
+        console.log(`Converted image for MCQ ${mcqId}: ${filename}, MIME: ${mimeType}, Size: ${imageBuffer.length} bytes`);
+        
+        return dataUrl;
+    } catch (err) {
+        console.error(`Error processing image for MCQ ${mcqId}:`, err);
+        // Fallback to URL
+        return `http://localhost:3000/uploads/${filename}`;
+    }
+};
 
 // const reviewMcqsBySubjectID = async(req,res) => {
 //     const mcq = await mcqs.findAll({

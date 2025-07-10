@@ -215,19 +215,21 @@ const reviewMCQsByPaperID = async (req, res) => {
 
         const transformedData = await Promise.all(mapping.map(async (item) => {
             const plainItem = item.toJSON();
-            // Only process the question image (name field) since choices are text
-            const questionImageBase64 = await processImageToBase64(plainItem.mcq.name);
+            // Process both the question image (name field) and the image field
+            const mcqImageBase64 = await processImageToBase64(plainItem.mcq.image);
             
             return {
                 ...plainItem,
                 id: plainItem.mcq.id,
-                name: questionImageBase64 || plainItem.mcq.name,
+                name: plainItem.mcq.name,
+                image: mcqImageBase64 || plainItem.mcq.image, // fallback to original if conversion fails
                 choice1: plainItem.mcq.choice1, // remains as text
                 choice2: plainItem.mcq.choice2, // remains as text
                 choice3: plainItem.mcq.choice3, // remains as text
                 choice4: plainItem.mcq.choice4, // remains as text
                 answer: plainItem.mcq.answer,   // remains as text
                 original_name: plainItem.mcq.name,
+                original_image: plainItem.mcq.image, // keep original for reference
                 mcq: undefined
             };
         }));
