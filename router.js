@@ -151,7 +151,7 @@ router.post("/loginUser",userController.loginUser)
 // Paper 
 router.post("/createPaper",paperController.createPaper)
 router.post("/updatePaper",paperController.updatePaper)
-router.post("/deletePaper",paperController.deletePaper)
+router.post("/deletePaper/:id", paperController.deletePaper);
 router.post("/reviewAllPaper",paperController.reviewAllPaper)
 router.post("/reviewAllPaperByUserID",paperController.reviewAllPaperByUserID)
 

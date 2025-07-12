@@ -24,7 +24,7 @@ const deleteFeedback = async(req,res) => {
 }
 
 const reviewFeedbackByPaperID = async(req,res) => {
-    const feedbacks = await feedback.findAll({where:{id: req.body.feedback_id}})
+    const feedbacks = await feedback.findAll({where:{paper_id: req.body.paper_id}})
     res.json({code: 200, data: feedbacks})
 }
 

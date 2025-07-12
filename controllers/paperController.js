@@ -30,10 +30,20 @@ const updatePaper = async(req,res) => {
     res.json({code:200, data: papers})
 }
 
-const deletePaper = async(req,res) => {
-    const papers = await paper.update({status: false},{where:{id:req.paramas.id}})
-    res.json(200).send("Paper deleted !")
-}
+const deletePaper = async (req, res) => {
+  try {
+    const result = await paper.destroy({ where: { id: req.params.id } });
+
+    if (result > 0) {
+      res.json({ success: true, message: "Paper deleted!" });
+    } else {
+      res.json({ success: false, message: "Paper not found." });
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ success: false, message: "Error deleting paper." });
+  }
+};
 
 const reviewAllPaper = async(req,res) => {
     const papers = await paper.findAll({where:{},
